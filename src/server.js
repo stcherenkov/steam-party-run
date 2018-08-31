@@ -7,6 +7,7 @@ const config = require('./config')
 
 const app = express()
 
+// FIXME
 app.use(expressWinston.logger({
   transports: [
     new winston.transports.Console({
@@ -16,6 +17,17 @@ app.use(expressWinston.logger({
   meta: true,
   msg: "{{req.method}} {{req.url}} >> {{res.statusCode}} {{res.responseTime}}ms",
   colorize: true
+}))
+
+// add router here
+
+// FIXME
+app.use(expressWinston.errorLogger({
+  transports: [
+    new winston.transports.Console({
+      colorize: true
+    })
+  ]
 }))
 
 app.listen(
