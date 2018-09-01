@@ -13,5 +13,7 @@ const DEFAULT_CONFIG = yaml.safeLoad(
 )
 
 module.exports = {
-  get: (p) => _.get(DEFAULT_CONFIG, p)
+  get: (pth) => _.cloneDeep(
+    _.get(DEFAULT_CONFIG, pth)
+  )
 }

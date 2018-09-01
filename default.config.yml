@@ -1,2 +1,23 @@
 server:
   port: 1337
+  context: /
+
+static:
+  protocol: ''
+  host: ''
+  context: /static
+
+log:
+  # error
+  # warn
+  # info
+  # http
+  # verbose
+  # debug
+  # silly
+  level: error
+  override:
+    # initial server start
+    server: info
+    # express server lifecycle
+    express: http

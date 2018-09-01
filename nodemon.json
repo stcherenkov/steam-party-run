@@ -1,6 +1,7 @@
 {
   "watch": [
     "src",
+    "views",
     "default.config.yml"
   ],
   "delay": "3000"
