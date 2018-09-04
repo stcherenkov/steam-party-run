@@ -12,8 +12,36 @@ const DEFAULT_CONFIG = yaml.safeLoad(
   )
 )
 
+const ENV_CONFIG_PATH = process.env.CONFIG_PATH || path.resolve(
+  process.cwd(),
+  'env.config.yml'
+)
+
+let config = {}
+
+function loadConfig () {
+  try {
+    config = _.merge(
+      {},
+      DEFAULT_CONFIG,
+      yaml.safeLoad(
+        fs.readFileSync(ENV_CONFIG_PATH)
+      )
+    )
+  } catch (err) {
+    config = DEFAULT_CONFIG
+  }
+}
+
+loadConfig()
+
+fs.watch(
+  ENV_CONFIG_PATH,
+  loadConfig
+)
+
 module.exports = {
-  get: (pth) => _.cloneDeep(
-    _.get(DEFAULT_CONFIG, pth)
+  get: (p) => _.cloneDeep(
+    _.get(config, p)
   )
 }

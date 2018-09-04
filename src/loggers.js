@@ -1,5 +1,5 @@
 const winston = require('winston')
-const _ = require('lodash')
+const nanoid = require('nanoid')
 const { combine, colorize, align, timestamp, label, printf } = winston.format
 
 const config = require('./config')
@@ -24,7 +24,12 @@ const createLogger = (name) => winston.createLogger({
         return `${info.timestamp} ${info.level} :: [${info.label}] ${info.constructor.name}: ${info.message} \n${info.stack}`
       }
 
-      return `${info.timestamp} ${info.level} :: [${info.label}] ${info.message}`
+      let value = ''
+      if (info.value) {
+        value = '\n' + JSON.stringify(info.value, null, '  ')
+      }
+
+      return `${info.timestamp} ${info.level} :: [${info.label}] ${info.message} ${value}`
     })
   )
 })
@@ -44,8 +49,12 @@ module.exports = {
   // simplified version of express-winston approach
   expressHTTP: (req, res, next) => {
     req.timestamp = Date.now()
+    // generate request id to specify log chains
+    req.nanoid = nanoid(10)
 
     const logger = get('express')
+
+    logger.http(`${req.nanoid}  ${req.method} ${req.url}`)
 
     const origialEnd = res.end
 
@@ -61,7 +70,7 @@ module.exports = {
 
       logger.log({
         level,
-        message: `${req.method} ${req.url} >> ${res.statusCode} ${responseTime}ms`
+        message: `${req.nanoid}  ${req.method} ${req.url} >> ${res.statusCode} ${responseTime}ms`
       })
 
       origialEnd.apply(this, args)

@@ -1,3 +1,6 @@
+# use local env.config.yml for your specific configuration
+# i.e.: Steam API key
+
 server:
   port: 1337
   context: /
@@ -6,6 +9,9 @@ static:
   protocol: ''
   host: ''
   context: /static
+
+lowdb:
+  games: './data/games.cache.json'
 
 log:
   # error
@@ -21,3 +27,16 @@ log:
     server: info
     # express server lifecycle
     express: http
+#    steamspy: debug
+#    steam: info
+
+steamspy:
+  requestInterval: 300
+  multiplayerTags:
+    - Multiplayer
+    - PvP
+    - Online Co-Op
+    - Massively Multiplayer
+
+steam:
+  apiKey: null
