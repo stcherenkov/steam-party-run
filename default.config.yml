@@ -12,6 +12,7 @@ static:
 
 lowdb:
   games: './data/games.cache.json'
+  cacheNamespace: cache
 
 log:
   # error

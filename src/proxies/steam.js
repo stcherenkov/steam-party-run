@@ -38,33 +38,39 @@ const resolveUrlToId = (username) => {
 }
 
 module.exports = {
-  getUserGames: async (username, sort = null) => {
+  getGameIdsByUsername: async function (username) {
     logger.silly(`api key = ${config.get('steam.apiKey')}`)
 
     const steamId = await resolveUrlToId(username)
-    logger.debug(`steamId = ${steamId}`)
+    logger.debug(`found ${username} = ${steamId}`)
 
+    return await this.getGameIdsByUserId(steamId)
+  },
+  getGameIdsByUserId: async function (steamid) {
     return rq({
       url: `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/`,
       qs: {
         key: config.get('steam.apiKey'),
-        steamid: steamId,
+        steamid,
         format: 'json'
       },
       json: true
     }).then((rs) => {
       logger.log({
         level: 'debug',
-        message: `IPlayerService/GetOwnedGames?steamid=${steamId}`,
+        message: `IPlayerService/GetOwnedGames?steamid=${steamid}`,
         value: rs
       })
 
-      const rawGames = _.get(rs, 'response.games', [])
-      const games = sort ?
-        rawGames.sort(sort).map((item) => item.appid) :
-        rawGames.map((item) => item.appid)
+      return Promise.resolve(
+        _.get(rs, 'response.games', [])
+          .map((game) => game.appid)
+      )
+    }, (err) => {
+      logger.error(`Error on request to IPlayerService/GetOwnedGames?steamid=${steamid}`)
+      logger.error(err)
 
-      return Promise.resolve(games)
+      return Promise.reject(new Error('Could not connect to Steam server'))
     })
   }
 }
