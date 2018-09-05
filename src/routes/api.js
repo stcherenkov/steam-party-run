@@ -1,18 +1,17 @@
 const router = require('express').Router()
 
 const steamspy = require('../proxies/steamspy')
+const steam = require('../proxies/steam')
 
 router.get('/cached/game', async (req, res) => {
   if (!req.query.id) {
     return res.status(400).send('400 Bad request')
   }
 
-  const found = await steamspy.getById(req.query.id)
+  const found = await steamspy.safeGetById(req.query.id)
 
   return res.send(found)
 })
-
-const steamUser = require('../proxies/steam')
 
 router.get('/user/all', async (req, res, next) => {
   if (!req.query.name) {
@@ -20,7 +19,7 @@ router.get('/user/all', async (req, res, next) => {
   }
 
   try {
-    const games = await steamUser.getUserGames(
+    const games = await steam.getUserGames(
       req.query.name,
       (a, b) => b.playtime_forever - a.playtime_forever
     )
@@ -37,7 +36,7 @@ router.get('/user/multiplayer', async (req, res, next) => {
   }
 
   try {
-    const gameIds = await steamUser.getUserGames(
+    const gameIds = await steam.getUserGames(
       req.query.name,
       (a, b) => b.playtime_forever - a.playtime_forever
     )
