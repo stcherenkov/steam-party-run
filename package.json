@@ -5,9 +5,11 @@
   "main": "./src/server.js",
   "scripts": {
     "dev": "npx nodemon ./src/server.js",
-    "start": "npx pm2 start ./src/server.js",
-    "restart": "npx pm2 restart ./src/server.js",
-    "stop": "npx pm2 stop ./src/server.js",
+    "dev:front": "NODE_ENV=development npx webpack --config webpack.config.js --watch",
+    "build:front": "NODE_ENV=production npx webpack --config webpack.config.js",
+    "start": "npx forever start ./src/server.js",
+    "restart": "npx forever restart ./src/server.js",
+    "stop": "npx forever stop ./src/server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,9 +36,27 @@
     "winston": "^3.0.0"
   },
   "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-syntax-class-properties": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
+    "autoprefixer": "^9.1.5",
+    "axios": "^0.18.0",
+    "babel-loader": "^8.0.2",
+    "babel-plugin-transform-class-properties": "^6.24.1",
     "commander": "^2.17.1",
+    "css-loader": "^1.0.0",
     "nodemon": "^1.18.4",
-    "ora": "^3.0.0"
+    "ora": "^3.0.0",
+    "postcss": "^7.0.2",
+    "postcss-loader": "^3.0.0",
+    "prop-types": "^15.6.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "style-loader": "^0.23.0",
+    "webpack": "^4.17.2",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.7"
   },
   "private": true
 }
