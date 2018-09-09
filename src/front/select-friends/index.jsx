@@ -2,21 +2,24 @@ import React from 'react'
 import propTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import { Section } from '../common.jsx';
+
 import UrlInput from './url-input.jsx'
 import FriendItem from './friend-item.jsx'
 
+import style from './style.css'
+
 export const SelectFriends = (props) => (
-  <section>
-    <h2>Add friends</h2>
+  <Section title="Add friends">
     <UrlInput />
     {props.recent.length > 0 && (
-      <ul>
+      <ul className={style.recent}>
         {props.recent.map((url) => (
           <FriendItem key={url} url={url} />
         ))}
       </ul>
     )}
-  </section>
+  </Section>
 )
 
 SelectFriends.propTypes = {

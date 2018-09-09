@@ -2,24 +2,31 @@ import React from 'react'
 import propTypes from 'prop-types'
 import { connect } from 'react-redux'
 
+import { Section } from '../common.jsx'
+
 import MemberItem from './member-item.jsx'
+import style from './style.css'
 
-export const Party = (props) =>
-  <section>
-    <h2>Your party</h2>
-    <ul>
-    {props.urls.map((url, idx) =>
-      (
-        <MemberItem
-          key={url}
-          url={url}
-          idx={idx}
-        />
-      )
-    )}
-    </ul>
-  </section>
-
+export const Party = (props) => {
+  if (props.urls.length === 0) {
+    return <Section title="Your party is empty" />
+  }
+  return (
+    <Section title="Your party">
+      <ul className={style.party}>
+        {props.urls.map((url, idx) =>
+          (
+            <MemberItem
+              key={url}
+              url={url}
+              idx={idx}
+            />
+          )
+        )}
+      </ul>
+    </Section>
+  )
+}
 Party.propTypes = {
   urls: propTypes.arrayOf(
     propTypes.string

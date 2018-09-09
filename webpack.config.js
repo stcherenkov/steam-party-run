@@ -1,5 +1,7 @@
 const path = require('path')
 
+const config = require('./src/config')
+
 module.exports = {
   entry: './src/front/index.jsx',
   output: {
@@ -37,8 +39,20 @@ module.exports = {
                 '[hash:base64:12]':
                 '[path][name]__[local]--[hash:base64:5]'
             }
+          },
+          'postcss-loader'
+        ]
+      },
+      {
+        test:  /\.(png|jpg|gif|svg)$/,
+        use: [
+          {
+            loader: 'file-loader',
+            options: {
+              publicPath: `${config.get('server.context')}/static/app/`
+            }
           }
-        ],
+        ]
       }
     ]
   }

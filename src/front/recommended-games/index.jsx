@@ -3,25 +3,25 @@ import propTypes from 'prop-types'
 import { connect } from 'react-redux'
 import intersectionBy from 'lodash/intersectionBy.js'
 
+import { Section } from '../common.jsx'
+
 import { GameItem } from './game-item.jsx'
+import style from './style.css'
 
 export const GameList = (props) => {
   if (props.games.length === 0) {
     return (
-      <section>
-        <h2>No games to display</h2>
-      </section>
+      <Section title="No games to display" />
     )
   }
   return (
-    <section>
-      <h2>Recommended games</h2>
-      <ul>
+    <Section title="Recommended games">
+      <ul className={style.games}>
         {props.games.map((game) => (
           <GameItem key={game.appid} {...game} />
         ))}
       </ul>
-    </section>
+    </Section>
   )
 }
 

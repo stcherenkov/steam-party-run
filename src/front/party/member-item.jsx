@@ -5,6 +5,9 @@ import { connect } from 'react-redux'
 
 import { removeFromParty } from '../data/actions.js'
 
+import style from './style.css'
+import removeImg from './remove.svg'
+
 const personastates = [
   'offline',
   'online',
@@ -18,22 +21,54 @@ const personastates = [
 export const MemberItem = (props) => {
   if (!props.profile) {
     return (
-      <li>Unknown</li>
+      <li className={style.member}>
+        <img
+          src={props.profile.avatarfull}
+          alt="Empty avatar"
+          className={style.avatar}
+          title="Loading user data..."
+        />
+        <span className={style.name}>???</span>
+      </li>
     )
   }
 
   if (!props.profile.recent) {
     return (
-      <li>
-        <img src={props.profile.avatarfull} /> {props.profile.personaname} updating...
+      <li className={style.member}>
+        <img
+          src={props.profile.avatarfull}
+          alt={`${props.profile.personaname} avatar`}
+          className={style.avatar}
+          title="Updating user status..."
+        />
+        <span className={style.name}>{props.profile.personaname}</span>
       </li>
     )
   }
 
+  const status = personastates[props.profile.personastate]
+
   return (
-    <li>
-      <img src={props.profile.avatarfull} /> {props.profile.personaname} {personastates[props.profile.personastate]}
-      <button onClick={props.onRemove}>Remove</button>
+    <li
+      className={`${style.member} ${style[status]}`}
+    >
+      <img
+        src={props.profile.avatarfull}
+        alt={`${props.profile.personaname} avatar`}
+        className={style.avatar}
+        title={`User is currently ${status}`}
+      />
+      <span className={style.name}>{props.profile.personaname}</span>
+      <button
+        className={style.remove}
+        onClick={props.onRemove}
+        style={{
+          backgroundImage: `url(${removeImg})`
+        }}
+      >
+        Remove
+      </button>
     </li>
   )
 }

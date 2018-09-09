@@ -1,10 +1,13 @@
 import axios from 'axios'
+import get from 'lodash/get.js'
 
 import * as types from './action-types.js'
 
 import { apiQueryFromUrl } from '../utils.js'
 
 let updatingMultiplayerLastRequestId = 0
+
+const API = get(window, 'config.apiRoot', '')
 
 export const addToParty = (url) => (dispatch, getState) => {
   const { party } = getState()
@@ -29,7 +32,7 @@ export const addToParty = (url) => (dispatch, getState) => {
     if (party.length === 0) {
       const requestId = updatingMultiplayerLastRequestId + 1
       updatingMultiplayerLastRequestId = requestId
-      axios.get(`/api/user/multiplayer?${query}`)
+      axios.get(`${API}/user/multiplayer?${query}`)
         .then(({ data }) => {
           if (requestId === updatingMultiplayerLastRequestId) {
             dispatch({
@@ -40,7 +43,7 @@ export const addToParty = (url) => (dispatch, getState) => {
         })
     }
 
-    return axios.get(`/api/user?${query}`)
+    return axios.get(`${API}/user?${query}`)
       .then(({ data }) => {
         dispatch({
           type: types.PROFILE_UPDATE,
@@ -70,7 +73,7 @@ export const removeFromParty = (index) => (dispatch, getState) => {
       const query = apiQueryFromUrl(state.party[0])
       const requestId = updatingMultiplayerLastRequestId + 1
       updatingMultiplayerLastRequestId = requestId
-      axios.get(`/api/user/multiplayer?${query}`)
+      axios.get(`${API}/user/multiplayer?${query}`)
         .then(({ data }) => {
           if (requestId === updatingMultiplayerLastRequestId) {
             dispatch({

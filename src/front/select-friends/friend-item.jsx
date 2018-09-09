@@ -4,21 +4,24 @@ import { connect } from 'react-redux'
 
 import { addToParty } from '../data/actions.js'
 
+import style from './style.css'
+
 export const FriendItem = (props) => {
   if (!props.personaname) {
     return null
   }
 
   return (
-    <li>
+    <li className={style.recentItem}>
       <button
         onClick={props.onClick}
-        title={props.personaname}
+        title={`Add ${props.personaname} to party`}
+        className={style.recentButton}
+        style={{
+          backgroundImage: `url(${props.avatarmedium})`
+        }}
       >
-        <img
-          src={props.avatarmedium}
-          alt={`${props.personaname} avatar`}
-        />
+        {props.personaname}
       </button>
     </li>
   )

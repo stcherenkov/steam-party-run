@@ -1,0 +1,78 @@
+.party {
+  display: flex;
+}
+
+.member {
+  position: relative;
+  margin: 10px 12px 12px;
+}
+
+.remove {
+  display: block;
+  box-sizing: border-box;
+  position: absolute;
+  right: -8px;
+  top: -8px;
+  width: 32px;
+  height: 32px;
+  border-radius: 16px;
+  border: 2px solid #5a3a3a;
+  background-color: #000;
+  background-size: contain;
+  background-position: center;
+  font-size: 0;
+
+  &:hover, &:focus {
+    cursor: pointer;
+    background-color: #2b0000;
+  }
+}
+
+.name {
+  display: block;
+  width: 92px;
+  text-align: center;
+}
+
+.avatar {
+  width: 92px;
+  height: 92px;
+  display: block;
+  border-radius: 46px;
+  box-shadow: 0 0 24px #678;
+  animation: pulse-shadow 2s infinite ease-in-out;
+  margin-bottom: 8px;
+}
+
+.offline .avatar {
+  box-shadow: 0 0 24px #678;
+  animation: none;
+}
+
+.online .avatar {
+  box-shadow: 0 0 24px #6a8;
+  animation: none;
+}
+
+.busy .avatar {
+  box-shadow: 0 0 24px #ca6;
+  animation: none;
+}
+
+@keyframes pulse-shadow {
+  from {
+    box-shadow: 0 0 8px #678;
+  }
+  20% {
+    box-shadow: 0 0 24px #678;
+  }
+  40% {
+    box-shadow: 0 0 8px #678;
+  }
+  60% {
+    box-shadow: 0 0 24px #678;
+  }
+  to {
+    box-shadow: 0 0 8px #678;
+  }
+}

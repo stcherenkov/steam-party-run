@@ -5,6 +5,8 @@ import noop from 'lodash/noop.js'
 
 import { addToParty } from '../data/actions.js'
 
+import style from './style.css'
+
 export class UrlInput extends React.Component {
   constructor (props) {
     super(props)
@@ -42,15 +44,31 @@ export class UrlInput extends React.Component {
 
   render () {
     return (
-      <form onSubmit={this.handleSubmit}>
+      <form
+        className={style.form}
+        onSubmit={this.handleSubmit}
+      >
+        <label
+          className={style.label}
+          htmlFor="steam-url"
+        >
+          Insert link to Steam profile in the box below:
+        </label>
         <input
+          id="steam-url"
           name="steam-url"
           type="url"
           autoFocus
           onChange={this.handleChange}
           value={this.state.value}
+          className={style.input}
         />
-        <button type="submit">Add user</button>
+        <button
+          type="submit"
+          className={style.submit}
+        >
+          Add
+        </button>
       </form>
     )
   }

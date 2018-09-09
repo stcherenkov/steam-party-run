@@ -3,17 +3,12 @@
 
 server:
   port: 1337
-  context: /
+  context: ''
 
 apiProtection:
   enabled: true
   allowedHosts:
     - 'localhost:1337'
-
-static:
-  protocol: ''
-  host: ''
-  context: /static
 
 lowdb:
   games: './data/games.cache.json'

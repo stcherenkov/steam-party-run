@@ -5,11 +5,16 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--<link rel="icon" type="image/png" href="{{staticUrl "/images/favicon.png"}}" />-->
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{staticUrl "/critical.css"}}" />
+    <script>
+        window.config = JSON.parse('{{{ configJSON }}}');
+    </script>
 </head>
 <body>
-    <h1>Steam Party Run</h1>
-    <div id="app"></div>
+    <div class="wrapper">
+        <h1 class="title">Steam Party Run</h1>
+        <div id="app"></div>
+    </div>
     <script src="{{staticUrl "/app/index.js"}}"></script>
 </body>
