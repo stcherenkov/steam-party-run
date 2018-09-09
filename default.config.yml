@@ -5,6 +5,11 @@ server:
   port: 1337
   context: /
 
+apiProtection:
+  enabled: true
+  allowedHosts:
+    - 'localhost:1337'
+
 static:
   protocol: ''
   host: ''
@@ -30,6 +35,7 @@ log:
     express: http
 #    steamspy: debug
 #    steam: info
+#    api-protection: verbose
 
 steamspy:
   requestInterval: 300

@@ -58,48 +58,50 @@ const queue = {
 
 // automatically chooses cache over network
 // and respects API limits
-const getMultiplayerById = (id) => {
-  logger.verbose(`Looking for "${id}" in local cache...`)
+const getMultiplayer = (steamGame) => {
+  logger.verbose(`Looking for "${steamGame.appid}" in local cache...`)
 
-  const cachedGame = db.get([ id ]).value()
+  const cachedGame = db.get([ steamGame.appid ]).value()
 
   if (cachedGame) {
     return Promise.resolve(isMultiplayer(cachedGame) ? cachedGame : null)
   }
 
-  logger.verbose(`"${id}" not found in local cache`)
+  logger.verbose(`"${steamGame.appid}" not found in local cache`)
 
   return queue.add(() => {
       const startRequest = new Date()
 
-      logger.debug(`Request for "${id}" started at ${startRequest.toISOString()}`)
+      logger.debug(`Request for "${steamGame.appid}" started at ${startRequest.toISOString()}`)
 
-      return loadById(id)
-        .then((game) => {
+      return loadById(steamGame.appid)
+        .then((steamspyGame) => {
           const elapsedTime = Date.now() - startRequest
 
-          logger.verbose(`Request for "${id}" took ${elapsedTime} ms`)
+          logger.verbose(`Request for "${steamGame.appid}" took ${elapsedTime} ms`)
 
-          logger.verbose(`got game data for "${id}"`)
+          logger.verbose(`got game data for "${steamGame.appid}"`)
           logger.debug({
             message: 'data',
-            value: game
+            value: steamspyGame
           })
 
-          if (game) {
-            game[cacheNamespace] = {
+          if (steamspyGame) {
+            steamspyGame[cacheNamespace] = {
               updatedAt: (new Date()).toISOString()
             }
 
-            db.set([id], game)
+            Object.assign(steamspyGame, steamGame)
+
+            db.set([steamGame.appid], steamspyGame)
               .write()
           }
 
-          logger.verbose(`Saved "${id}" to cache`)
+          logger.verbose(`Saved "${steamGame.appid}" to cache`)
 
           return wait(
             config.get('steamspy.requestInterval') - elapsedTime,
-            isMultiplayer(game) ? game : null
+            isMultiplayer(steamspyGame) ? steamspyGame : null
           )
         })
     }
@@ -107,13 +109,12 @@ const getMultiplayerById = (id) => {
 }
 
 module.exports = {
-  getMultiplayerById,
-  filterMultiplayer: async (ids) => {
-    const multiplayer = await ids.reduce((p, id) =>
+  filterMultiplayer: async (steamGames) => {
+    const multiplayer = await steamGames.reduce((p, steamGame) =>
       p.then(async (games) => {
-        const game = await getMultiplayerById(id)
-        if (game) {
-          games.push(game)
+        const multiplayerGame = await getMultiplayer(steamGame)
+        if (multiplayerGame) {
+          games.push(multiplayerGame)
         }
 
         return Promise.resolve(games)

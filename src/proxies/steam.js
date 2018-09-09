@@ -48,10 +48,11 @@ module.exports = {
   },
   getGameIdsByUserId: async function (steamid) {
     return rq({
-      url: `http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/`,
+      url: 'http://api.steampowered.com/IPlayerService/GetOwnedGames/v0001/',
       qs: {
         key: config.get('steam.apiKey'),
         steamid,
+        include_appinfo: 1,
         format: 'json'
       },
       json: true
@@ -64,7 +65,49 @@ module.exports = {
 
       return Promise.resolve(
         _.get(rs, 'response.games', [])
-          .map((game) => game.appid)
+          .map(
+            ({
+              appid,
+              img_icon_url,
+              img_logo_url
+            }) => ({
+              appid,
+              iconUrl: `http://media.steampowered.com/steamcommunity/public/images/apps/${appid}/${img_icon_url}.jpg`,
+              logoUrl: `http://media.steampowered.com/steamcommunity/public/images/apps/${appid}/${img_logo_url}.jpg`
+            })
+          )
+      )
+    }, (err) => {
+      logger.error(`Error on request to IPlayerService/GetOwnedGames?steamid=${steamid}`)
+      logger.error(err)
+
+      return Promise.reject(new Error('Could not connect to Steam server'))
+    })
+  },
+  getUserByName: async function (username) {
+    const steamId = await resolveUrlToId(username)
+    logger.debug(`found ${username} = ${steamId}`)
+
+    return await this.getUserById(steamId)
+  },
+  getUserById: async function (steamid) {
+    return rq({
+      url: 'http://api.steampowered.com/ISteamUser/GetPlayerSummaries/v0002/',
+      qs: {
+        key: config.get('steam.apiKey'),
+        steamids: steamid,
+        format: 'json'
+      },
+      json: true
+    }).then((rs) => {
+      logger.log({
+        level: 'debug',
+        message: `ISteamUser/GetPlayerSummaries?steamids=${steamid}`,
+        value: rs
+      })
+
+      return Promise.resolve(
+        _.get(rs, 'response.players.0', { steamid })
       )
     }, (err) => {
       logger.error(`Error on request to IPlayerService/GetOwnedGames?steamid=${steamid}`)

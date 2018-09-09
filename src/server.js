@@ -21,7 +21,13 @@ hbs.registerHelper('staticUrl', (path) =>
 app.use(loggers.expressHTTP)
 
 app.use('/static', express.static('static'))
-app.use('/api', require('./routes/api'))
+app.use(
+  '/api',
+  [
+    require('./api-protection'),
+    require('./routes/api')
+  ]
+)
 app.use('/', require('./routes/pages'))
 
 // log every unhandled error
