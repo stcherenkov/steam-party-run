@@ -23,8 +23,7 @@ export const MemberItem = (props) => {
     return (
       <li className={style.member}>
         <img
-          src={props.profile.avatarfull}
-          alt="Empty avatar"
+          alt="Avatar not loaded yet"
           className={style.avatar}
           title="Loading user data..."
         />
