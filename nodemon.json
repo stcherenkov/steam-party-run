@@ -4,5 +4,8 @@
     "views",
     "default.config.yml"
   ],
+  "ignore": [
+    "src/front"
+  ],
   "delay": "3000"
 }
