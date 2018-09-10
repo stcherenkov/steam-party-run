@@ -58,6 +58,15 @@ body {
   color: azure;
 }
 
+a {
+  color: azure;
+  opacity: .75;
+}
+
+a:hover, a:focus {
+  opacity: 1;
+}
+
 .title {
   font-size: 64px;
   margin-bottom: 32px;
@@ -65,9 +74,32 @@ body {
   letter-spacing: 3px;
 }
 
+.description {
+  margin-bottom: 40px;
+  line-height: 1.25;
+}
+
+.description p {
+  padding-bottom: 12px;
+}
+
 .wrapper {
   max-width: 956px;
   padding: 32px 16px 64px;
   box-sizing: border-box;
   margin: 0 auto;
+}
+
+.footer {
+  margin: 120px -8px 32px;
+  padding: 32px 8px 0;
+  border-top: 1px solid rgba(240,255,255,.4);
+}
+
+.attributions {
+  font-size: .6em;
+}
+
+.attributions p {
+  padding-bottom: 12px;
 }

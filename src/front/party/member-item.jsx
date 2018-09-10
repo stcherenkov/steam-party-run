@@ -7,6 +7,8 @@ import { removeFromParty } from '../data/actions.js'
 
 import style from './style.css'
 import removeImg from './remove.svg'
+import noAvatarImg from './no-avatar.svg'
+import lockedImg from './locked.svg'
 
 const personastates = [
   'offline',
@@ -26,11 +28,14 @@ export const MemberItem = (props) => {
           alt="Avatar not loaded yet"
           className={style.avatar}
           title="Loading user data..."
+          src={noAvatarImg}
         />
-        <span className={style.name}>???</span>
+        <span className={style.name}>Loading user...</span>
       </li>
     )
   }
+
+  const isLocked = props.profile.games.length === 0
 
   if (!props.profile.recent) {
     return (
@@ -42,6 +47,17 @@ export const MemberItem = (props) => {
           title="Updating user status..."
         />
         <span className={style.name}>{props.profile.personaname}</span>
+        {isLocked && (
+          <span
+            className={style.locked}
+            style={{
+              backgroundImage: `url(${lockedImg})`
+            }}
+            title="User profile is private – so it is ignored"
+          >
+            Profile is private
+          </span>
+        )}
       </li>
     )
   }
@@ -68,6 +84,17 @@ export const MemberItem = (props) => {
       >
         Remove
       </button>
+      {isLocked && (
+        <span
+          className={style.locked}
+          style={{
+            backgroundImage: `url(${lockedImg})`
+          }}
+          title="User profile is private – so it is ignored"
+        >
+            Profile is private
+          </span>
+      )}
     </li>
   )
 }

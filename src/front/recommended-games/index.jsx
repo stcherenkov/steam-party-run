@@ -9,11 +9,16 @@ import { GameItem } from './game-item.jsx'
 import style from './style.css'
 
 export const GameList = (props) => {
+  if (props.noParty) {
+    return null
+  }
+
   if (props.games.length === 0) {
     return (
       <Section title="No games to display" />
     )
   }
+
   return (
     <Section title="Recommended games">
       <ul className={style.games}>
@@ -26,17 +31,22 @@ export const GameList = (props) => {
 }
 
 GameList.propTypes = {
-  games: propTypes.array
+  games: propTypes.array,
+  noParty: propTypes.bool
 }
 
 GameList.defaultProps = {
-  games: []
+  games: [],
+  noParty: true
 }
 
 export default connect(
   (state) => {
     const multiplayer = state.multiplayer
-    const partyGames = state.party.map((url) => state.profiles[url] && state.profiles[url].games).filter((item) => !!item)
+    const partyGames = state.party.map((url) =>
+      state.profiles[url] &&
+      state.profiles[url].games
+    ).filter((item) => !!item && item.length > 0)
 
     const args = [
       multiplayer,
@@ -45,7 +55,8 @@ export default connect(
     ]
 
     return {
-      games: intersectionBy.apply(null, args).sort((a, b) => a.name > b.name)
+      games: intersectionBy.apply(null, args).sort((a, b) => a.name > b.name),
+      noParty: state.party.length <= 0
     }
   }
 )(GameList)

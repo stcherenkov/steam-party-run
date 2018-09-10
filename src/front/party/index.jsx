@@ -9,7 +9,7 @@ import style from './style.css'
 
 export const Party = (props) => {
   if (props.urls.length === 0) {
-    return <Section title="Your party is empty" />
+    return <Section title="You must gather your party before venturing forth!" />
   }
   return (
     <Section title="Your party">

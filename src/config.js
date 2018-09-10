@@ -32,13 +32,7 @@ function loadConfig () {
     config = DEFAULT_CONFIG
   }
 }
-
 loadConfig()
-
-fs.watch(
-  ENV_CONFIG_PATH,
-  loadConfig
-)
 
 module.exports = {
   get: (p) => _.cloneDeep(

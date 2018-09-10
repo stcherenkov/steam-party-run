@@ -28,6 +28,25 @@
   }
 }
 
+.locked {
+  display: block;
+  box-sizing: border-box;
+  width: 32px;
+  height: 32px;
+  background-size: 18px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #222;
+  border: 2px solid #CF933A;
+  border-radius: 50%;
+  font-size: 0;
+  box-shadow: 0 0 32px rgba(207,147,58,.8);
+  position: absolute;
+  top: 36px;
+  left: 50%;
+  margin: 0 0 0 -16px;
+}
+
 .name {
   display: block;
   width: 92px;
