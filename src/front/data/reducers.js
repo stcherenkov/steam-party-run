@@ -66,14 +66,13 @@ export function multiplayer (state = [], action) {
 export function errors (state = {}, action) {
   switch (action.type) {
     case types.ERROR_THROW: {
-      const region = state[action.region].concat(action.message)
       return Object.assign({}, state, {
-        [action.region]: region
+        [action.region]: action.message
       })
     }
     case types.ERROR_DISMISS: {
       return Object.assign({}, state, {
-        [action.region]: []
+        [action.region]: null
       })
     }
     default: {

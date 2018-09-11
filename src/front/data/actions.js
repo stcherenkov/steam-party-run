@@ -27,7 +27,6 @@ export const addToParty = (url) => (dispatch, getState) => {
     url
   })
 
-  // FIXME: add sad path
   if (query) {
     if (party.length === 0) {
       const requestId = updatingMultiplayerLastRequestId + 1
@@ -41,6 +40,15 @@ export const addToParty = (url) => (dispatch, getState) => {
             })
           }
         })
+        .catch((err) => {
+          console.error(err)
+
+          dispatch({
+            type: types.ERROR_THROW,
+            region: 'recommended',
+            message: 'Server not available'
+          })
+        })
     }
 
     return axios.get(`${API}/user?${query}`)
@@ -51,12 +59,21 @@ export const addToParty = (url) => (dispatch, getState) => {
           user: data.user
         })
       })
+      .catch((err) => {
+        console.error(err)
+
+        dispatch({
+          type: types.ERROR_THROW,
+          region: 'party',
+          message: 'Server not available'
+        })
+      })
   }
 
   dispatch({
     type: types.ERROR_THROW,
     region: 'select-friends',
-    message: 'That\'s not a steam link!'
+    message: 'That\'s not a valid steam link!'
   })
   return Promise.reject()
 }
@@ -82,6 +99,15 @@ export const removeFromParty = (index) => (dispatch, getState) => {
             })
           }
         })
+        .catch((err) => {
+          console.error(err)
+
+          dispatch({
+            type: types.ERROR_THROW,
+            region: 'recommended',
+            message: 'Server not available'
+          })
+        })
     }
   }
 
@@ -90,3 +116,8 @@ export const removeFromParty = (index) => (dispatch, getState) => {
     index
   })
 }
+
+const dismissError = (region) => ({
+  type: types.ERROR_DISMISS,
+  region
+})
