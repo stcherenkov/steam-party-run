@@ -39,6 +39,7 @@ steamspy:
     - PvP
     - Online Co-Op
     - Massively Multiplayer
+  countFractionThreshold: 0.1
 
 steam:
   apiKey: null

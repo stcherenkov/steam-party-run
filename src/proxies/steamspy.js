@@ -15,10 +15,14 @@ db.defaults({})
 const cacheNamespace = config.get('lowdb.cacheNamespace')
 
 const isMultiplayer = (game) => {
-  const gameTags = Object.keys(game.tags || {})
+  const gameTags = game.tags || {}
+  const topVote = Math.max.apply(null, Object.values(gameTags))
+  const threshold = topVote * config.get('steamspy.countFractionThreshold')
+  const gameTagNames = Object.keys(gameTags || {})
+    .filter((tag) => gameTags[tag] >= threshold)
   const multiplayerTags = config.get('steamspy.multiplayerTags')
 
-  return _.intersection(multiplayerTags, gameTags).length > 0
+  return _.intersection(multiplayerTags, gameTagNames).length > 0
 }
 
 const wait = (timeout, resolveValue) => {
